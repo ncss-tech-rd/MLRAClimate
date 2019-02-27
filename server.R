@@ -139,8 +139,8 @@ shinyServer(function(input, output, session) {
     }
     rm(selectMonthlyA)
     sumMonthly <- ddply(selectMonthly, "Month", summarise,Lat = mean(Latitude),Lon = mean(Longitude),Elev = mean(Elevation),
-                        t25 = quantile(t, 0.25), t75 = quantile(t, 0.75), t = mean(t),
-                        p25 = quantile(p, 0.25), p75 = quantile(p, 0.75), p = mean(p), 
+                        t25 = quantile(t, 0.2), t75 = quantile(t, 0.8), t = mean(t),
+                        p25 = quantile(p, 0.2), p75 = quantile(p, 0.8), p = mean(p), 
                         tl = mean(tl))
     sumMonthly$th <- sumMonthly$t*2 - sumMonthly$tl
     sumMonthly <- merge(sumMonthly, DaysMonth, by.x='Month',by.y='Month_')
@@ -545,42 +545,46 @@ shinyServer(function(input, output, session) {
     ll2 <- data.frame(x=c(0,0), y=c(0,36))
     ll3 <- data.frame(x=c(15,15), y=c(18,36))
     l1 <- data.frame(x=c(-50,12), y=c(12,12))
-    l2 <- data.frame(x=c(-50,0), y=c(15,15))
-    l3 <- data.frame(x=c(-50,18), y=c(18,18))
-    l4 <- data.frame(x=c(0,24), y=c(24,24))
-    l5 <- data.frame(x=c(-10,-10), y=c(0,36))
-    l6 <- data.frame(x=c(-25,-25), y=c(0,36))
+    l2 <- data.frame(x=c(-25,0), y=c(15,15))
+    l3 <- data.frame(x=c(-10,18), y=c(18,18))
+    l4 <- data.frame(x=c(20,24), y=c(24,24))
+    l5 <- data.frame(x=c(-10,-10), y=c(18,36))
+    l6 <- data.frame(x=c(-25,-25), y=c(15,36))
+    l7 <- data.frame(x=c(5,5), y=c(18,36))
+    l8 <- data.frame(x=c(20,20), y=c(24,36))
     if(input$saveselect == TRUE) #Decide whether to plot comparison graph.
     { 
       climplot2 <-  ggplot() +
-      geom_polygon(data=a1, mapping=aes(x=x, y=y, fill='alpine'),alpha = 0.5)+
-      geom_polygon(data=a2, mapping=aes(x=x, y=y, fill='boreal'),alpha = 0.5)+
-      geom_polygon(data=a3, mapping=aes(x=x, y=y, fill='temperate'),alpha = 0.5)+
-      geom_polygon(data=a4, mapping=aes(x=x, y=y, fill='andean'),alpha = 0.5)+
-      geom_polygon(data=a5, mapping=aes(x=x, y=y, fill='oceanic'),alpha = 0.5)+
-      geom_polygon(data=a6, mapping=aes(x=x, y=y, fill='subtropical'),alpha = 0.5)+
-      geom_polygon(data=a7, mapping=aes(x=x, y=y, fill='tropical'),alpha = 0.5)+
-      
-      geom_line(data=ll1, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=ll2, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=ll3, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l1, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l2, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l3, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l4, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l5, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l6, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_point(data=StationMeans, mapping=aes(x=Cindex, y=Tg, color = "currentMLR"), size=0.5)+
-      geom_density2d(data=StationMeans, mapping=aes(x=Cindex, y=Tg), color = 'black',alpha = 0.25)+
-      geom_point(data=savedselect, mapping=aes(x=Cindex, y=Tg, color = "savedMLRA"), size=0.5)+
-      geom_density2d(data=savedselect, mapping=aes(x=Cindex, y=Tg),color = 'red',alpha = 0.25)+
-      scale_fill_manual("Thermozone", values = c("alpine" = "pink",
-                                             "boreal" = "darkgreen",
-                                             "temperate" = "greenyellow",
-                                             "andean" = "lightblue",
-                                             "oceanic" = "darkcyan",
-                                             "subtropical" = "orange",
-                                             "tropical" = "darkred"
+        geom_polygon(data=a1, mapping=aes(x=x, y=y, fill='alpine'),alpha = 0.5)+
+        geom_polygon(data=a2, mapping=aes(x=x, y=y, fill='boreal'),alpha = 0.5)+
+        geom_polygon(data=a3, mapping=aes(x=x, y=y, fill='temperate'),alpha = 0.5)+
+        geom_polygon(data=a4, mapping=aes(x=x, y=y, fill='andean'),alpha = 0.5)+
+        geom_polygon(data=a5, mapping=aes(x=x, y=y, fill='oceanic'),alpha = 0.5)+
+        geom_polygon(data=a6, mapping=aes(x=x, y=y, fill='subtropical'),alpha = 0.5)+
+        geom_polygon(data=a7, mapping=aes(x=x, y=y, fill='tropical'),alpha = 0.5)+
+        
+        geom_line(data=ll1, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+        geom_line(data=ll2, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+        geom_line(data=ll3, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+        geom_line(data=l1, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+        geom_line(data=l2, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+        geom_line(data=l3, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+        geom_line(data=l4, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+        geom_line(data=l5, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+        geom_line(data=l6, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+        geom_line(data=l7, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+        geom_line(data=l8, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+        geom_point(data=StationMeans, mapping=aes(x=Cindex, y=Tg, color = "currentMLR"), size=0.5)+
+        geom_density2d(data=StationMeans, mapping=aes(x=Cindex, y=Tg), color = 'black',alpha = 0.25)+
+        geom_point(data=savedselect, mapping=aes(x=Cindex, y=Tg, color = "savedMLRA"), size=0.5)+
+        geom_density2d(data=savedselect, mapping=aes(x=Cindex, y=Tg),color = 'red',alpha = 0.25)+
+        scale_fill_manual("Thermozone", values = c("alpine" = "pink",
+                                                   "boreal" = "darkgreen",
+                                                   "temperate" = "greenyellow",
+                                                   "andean" = "lightblue",
+                                                   "oceanic" = "darkcyan",
+                                                   "subtropical" = "orange",
+                                                   "tropical" = "darkred"
                                              
       ))+
         scale_color_manual(values=c("black", "red"), 
@@ -609,15 +613,17 @@ shinyServer(function(input, output, session) {
       geom_polygon(data=a6, mapping=aes(x=x, y=y, fill='subtropical'),alpha = 0.5)+
       geom_polygon(data=a7, mapping=aes(x=x, y=y, fill='tropical'),alpha = 0.5)+
       
-      geom_line(data=ll1, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=ll2, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=ll3, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l1, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l2, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l3, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l4, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l5, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
-      geom_line(data=l6, mapping=aes(x=x, y=y),alpha = 0.3, color='black', linetype='solid')+
+      geom_line(data=ll1, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+      geom_line(data=ll2, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+      geom_line(data=ll3, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+      geom_line(data=l1, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+      geom_line(data=l2, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+      geom_line(data=l3, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+      geom_line(data=l4, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+      geom_line(data=l5, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+      geom_line(data=l6, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+      geom_line(data=l7, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
+      geom_line(data=l8, mapping=aes(x=x, y=y),alpha = 0.2, color='black', linetype='solid')+
       geom_point(data=StationMeans, mapping=aes(x=Cindex, y=Tg), color = 'black', size=0.5)+
       geom_density2d(data=StationMeans, mapping=aes(x=Cindex, y=Tg),color = 'black',alpha = 0.25)+
       scale_fill_manual("Legend", values = c("alpine" = "pink",
