@@ -547,11 +547,11 @@ shinyServer(function(input, output, session) {
     l1 <- data.frame(x=c(-50,12), y=c(12,12))
     l2 <- data.frame(x=c(-25,0), y=c(15,15))
     l3 <- data.frame(x=c(-10,18), y=c(18,18))
-    l4 <- data.frame(x=c(20,24), y=c(24,24))
+    l4 <- data.frame(x=c(15,24), y=c(24,24))
     l5 <- data.frame(x=c(-10,-10), y=c(18,36))
     l6 <- data.frame(x=c(-25,-25), y=c(15,36))
     l7 <- data.frame(x=c(5,5), y=c(18,36))
-    l8 <- data.frame(x=c(20,20), y=c(24,36))
+    l8 <- data.frame(x=c(15,15), y=c(24,36))
     if(input$saveselect == TRUE) #Decide whether to plot comparison graph.
     { 
       climplot2 <-  ggplot() +
