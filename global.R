@@ -10,6 +10,7 @@ lakes <- readRDS(file='data/lakes.RDS')
 states <- readRDS(file='data/states.RDS')
 LRU.shptidy <- readRDS(file='data/LRU.shptidy.RDS')
 geomaxmin <- readRDS(file='data/geomaxmin.rds')
+geomaxmin <- geomaxmin[c(1,248,264:320,330:335,344,349,353,360,370),]
 MLRA <- readRDS(file='data/LRU.RDS')
 NormCoordTrans <- as.data.frame(readRDS(file='data/NormCoordTrans.RDS'))
 colnames(NormCoordTrans)[2:3] <- c('x','y')
